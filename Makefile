@@ -6,7 +6,7 @@
 #    By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/21 14:38:01 by arobu             #+#    #+#              #
-#    Updated: 2023/02/15 19:23:11 by arobu            ###   ########.fr        #
+#    Updated: 2023/02/17 18:40:21 by arobu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR			= ./src
 OBJ_DIR			= ./obj
 LIBFT_FOLDER	= ./libft
 LIBFT_LIB		= ./libft/libft.a
-MAIN_FILE		= main.c
+MAIN_FILE		:= main.c
 NORM_INCLUDE	= ./include
 
 # Compiler
@@ -55,13 +55,13 @@ OBJS	:= 	$(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 # Rules
 all:	$(NAME)
 
-$(NAME): $(OBJS) | $(OBJ_DIR)
+$(NAME): $(OBJS) $(MAIN_FILE)
 	@$(CC) $(INCLUDE) $(FRAMEWORK) $(ASAN) $(OBJS) $(MAIN_FILE) -o $@ -lm $(LDLFLAGS)
 	@echo "$(YELLOW)Philosophers$(DEF_COLOR) $(CYAN)done.$(DEF_COLOR)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@ echo "$(MAGENTA)Compiling:$(DEF_COLOR) $<."
-	@ $(CC) $(CFLAGS) -c $< -o $@ 
+	@ $(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)

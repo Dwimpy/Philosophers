@@ -1,37 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo_time.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 18:29:35 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/17 19:23:33 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/16 17:23:32 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/17 19:46:43 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "philosophers.h"
-#include "state.h"
+#include "../include/state.h"
 
-int	main(int argc, char **argv)
+void	action_time_ms(t_philosopher *philosopher, \
+							uint32_t time_to_sleep)
 {
-	t_state			state;
-	int				i;
-
-	initialize_state(&state, argc, argv);
-
-	i = -1;
-	while (++i < 5)
-	{
-		initialize_philo(&state, i);
-	}
-	while (1)
-	{
-		
-	}
-	return (0);
+	usleep(time_to_sleep * 1000);
 }

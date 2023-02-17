@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   message.h                                          :+:      :+:    :+:   */
+/*   philo_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/15 17:12:34 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/15 21:07:51 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/17 14:08:12 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/17 14:34:43 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MESSAGE_H
-# define MESSAGE_H
-# include <stdlib.h>
-# include "message.h"
+#include "../include/state.h"
 
-typedef struct s_message		t_message;
+static void	args_checker(int argc);
 
-typedef enum s_type
+void	parse_args(int argc, char **argv)
 {
-	REQUEST,
-	RELEASE
-}				t_type;
+	args_checker(argc);
+}
 
-typedef struct s_message
+static void	args_checker(int argc)
 {
-	t_type				type;
-	void				*sender;
-	t_message			*next;	
-}						t_message;
-
-void	send_message(t_type type, void *sender, void *receiver);
-
-#endif
+	if (argc != 5 && argc != 6)
+	{
+		print_error("Incorrect arguments");
+		print_usage();
+	}
+}
