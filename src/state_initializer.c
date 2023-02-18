@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:18:30 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/17 20:01:02 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/18 23:04:23 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,21 @@ static void		initialize_rules(t_state *state, int argc);
 
 void	initialize_state(t_state *state, int argc, char **argv)
 {
+	int	i;
+
+	i = -1;
 	initialize_rules(state, argc);
 	state->rules = state->init_rules(argv);
 	state->philosophers = (t_philosopher *)malloc(sizeof(t_philosopher) * \
 									state->rules.number_of_philosophers);
 	state->forks = (t_fork *)malloc(sizeof(t_fork) * \
 									state->rules.number_of_philosophers);
+	while (++i < state->rules.number_of_philosophers)
+	{
+		pthread_mutex_init(&state->forks[i].mutex, NULL);
+		state->forks[i].owner = NULL;
+	}
+	state->queue = create_queue();
 	pthread_mutex_init(&state->writing, NULL);
 }
 
