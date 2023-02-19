@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:29:35 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 17:22:36 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/19 17:32:47 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(int argc, char **argv)
 	initialize_state(state, argc, argv);
 	i = -1;
 	initialize_philo(state);
-
 	while (1)
 	{
 		i = -1;
