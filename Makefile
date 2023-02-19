@@ -6,7 +6,7 @@
 #    By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/21 14:38:01 by arobu             #+#    #+#              #
-#    Updated: 2023/02/19 03:36:50 by arobu            ###   ########.fr        #
+#    Updated: 2023/02/19 22:08:08 by arobu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ NORM_INCLUDE	= ./include
 
 # Compiler
 CC			= cc
-CFLAGS		= -g3 -pthread  #-Wall -Werror -Wextra
+CFLAGS		= -g3 -pthread  -Wall -Werror -Wextra
 LDLFLAGS	= #-lft -L ./libft/
 
 ASAN		= #-fsanitize=address -g3

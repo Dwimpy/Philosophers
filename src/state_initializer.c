@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:18:30 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 17:23:53 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/19 22:08:46 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,26 @@
 
 static t_rules	initialize_no_optional(char **argv);
 static t_rules	initialize_optional(char **argv);
-static void		initialize_rules(t_state *state, int argc);
+void			*sync_threads(void *param);
 
-void	initialize_state(t_state *state, int argc, char **argv)
+void	initialize_state(t_state **the_state, int argc, char **argv)
 {
-	int	i;
+	t_state	*state;
+	int		i;
 
-	i = 0;
-	initialize_rules(state, argc);
-	state->rules = state->init_rules(argv);
-	state->philosophers = (t_philosopher *)malloc(sizeof(t_philosopher) * \
-									state->rules.number_of_philosophers);
-	state->forks = (t_fork *)malloc(sizeof(t_fork) * \
-									state->rules.number_of_philosophers);
-	while (i < state->rules.number_of_philosophers)
-	{
-		pthread_mutex_init(&state->forks[i].mutex, NULL);
-		state->forks[i].id = i;
-		i++;
-	}
-	state->sync_threads = 0;
-	pthread_mutex_init(state->writing, NULL);
+	i = -1;
+	*the_state = (t_state *)malloc(sizeof(t_state));
+	if (!(*the_state))
+		state_exit_error(*the_state);
+	state = *the_state;
+	state->philosophers = NULL;
+	state->forks = NULL;
+	state->writing = NULL;
+	state_initializer_utils(state, argc, argv);
+	init_state_values(state);
 }
 
-static void	initialize_rules(t_state *state, int argc)
+void	initialize_rules(t_state *state, int argc)
 {
 	if (argc == 5)
 		state->init_rules = &initialize_no_optional;
@@ -75,5 +71,29 @@ static t_rules	initialize_optional(char **argv)
 	return (rules);
 }
 
-// number_of_philosophers time_to_die time_to_eat time_to_sleep
-// [number_of_times_each_philosopher_must_eat]
+void	*sync_threads(void *param)
+{
+	bool		in_sync;
+	int			i;
+	t_state		*state;
+
+	state = (t_state *)param;
+	in_sync = false;
+	while (in_sync == false)
+	{
+		i = -1;
+		in_sync = true;
+		while (++i < state->rules.number_of_philosophers)
+		{
+			if (state->thread_started == 0 || \
+				state->philosophers[i].thread_started == 0)
+				in_sync = false;
+		}
+	}
+	i = -1;
+	state->start_time = time_stamp_ms();
+	while (++i < state->rules.number_of_philosophers)
+		state->philosophers[i].time_of_last_meal = state->start_time;
+	state->are_synced = 1;
+	return (NULL);
+}

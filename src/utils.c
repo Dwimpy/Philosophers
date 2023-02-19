@@ -6,14 +6,17 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 17:04:15 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/16 17:07:02 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/19 20:41:17 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static int	ft_isdigit(int c);
 static int	ft_isspace3(char c);
+static int	exit_error(char *error_message);
 
 int	ft_atoi(const char *s)
 {
@@ -37,9 +40,9 @@ int	ft_atoi(const char *s)
 		s++;
 	}
 	if (sum > INT_MAX && sign == 1)
-		return (INT_MAX);
+		return (exit_error("Error: Overflow"));
 	if (sum > 2147483648 && sign == -1)
-		return (INT_MAX);
+		return (exit_error("Error: Underflow"));
 	return (sign * sum);
 }
 
@@ -56,4 +59,10 @@ static int	ft_isspace3(char c)
 		|| c == '\n'
 		|| c == '\f'
 		|| c == '\v');
+}
+
+static int	exit_error(char *error_message)
+{
+	printf("%s\n", error_message);
+	exit (1);
 }

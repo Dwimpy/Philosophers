@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 20:14:33 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 17:22:21 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/19 21:11:03 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ typedef struct s_philosopher
 	t_philo_action		action;
 	t_fork				*left;
 	t_fork				*right;
+	uint32_t			meals_eaten;
 	void				*param;
+	bool				thread_started;
+	bool				thread_ended;
 }						t_philosopher;
 
 void		safe_printing(t_philosopher *philosopher);
@@ -53,5 +56,8 @@ void		get_forks(t_philosopher *philosopher);
 void		philosopher_think(t_philosopher *philosopher);
 void		philosopher_sleep(t_philosopher *philosopher);
 void		philosopher_eat(t_philosopher *philosopher);
-void		action_time_ms(uint32_t time_to_sleep);
+void		lock_forks(t_philosopher *philosopher);
+void		unlock_forks(t_philosopher *philosopher);
+void		sync_philosophers(t_philosopher *philosopher, int32_t time_to_eat);
+void		end_philosophers(t_philosopher *philosopher);
 #endif

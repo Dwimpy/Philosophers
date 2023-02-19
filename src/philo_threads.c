@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   philo_threads.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:37:13 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 17:33:01 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/19 21:04:18 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,16 @@
 void	*philosopher_loop(void *param)
 {
 	t_philosopher		*philosopher;
-	t_rules				*rules;
 	t_state				*state;
+	t_rules				*rules;
 
 	philosopher = (t_philosopher *)param;
 	state = (t_state *)philosopher->param;
 	rules = &state->rules;
-	if (philosopher->id & 1)
-		ft_usleep(0.5 * rules->time_to_eat);
-	while (1)
-	{
+	sync_philosophers(philosopher, rules->time_to_eat);
+	while (!state->is_dead && !state->is_finished)
 		philosopher->action(philosopher);
-	}
+	end_philosophers(philosopher);
 	return (NULL);
 }
 
@@ -35,14 +33,13 @@ void	initialize_philo(t_state *state)
 	t_philosopher	*philosopher;
 	int				i;
 
-	philosopher = state->philosophers;
 	i = -1;
-	state->start_time = time_stamp_ms();
+	philosopher = state->philosophers;
 	while (++i < state->rules.number_of_philosophers)
 	{
 		philosopher[i].id = i;
-		philosopher[i].state = HUNGRY;
-		philosopher[i].action = &get_forks;
+		philosopher[i].state = THINKING;
+		philosopher[i].action = &philosopher_think;
 		philosopher[i].left = &state->forks[i];
 		philosopher[i].right = &state->forks[(i + 1) % \
 							state->rules.number_of_philosophers];
@@ -51,4 +48,27 @@ void	initialize_philo(t_state *state)
 		pthread_create(&philosopher->thread, NULL, \
 						philosopher_loop, &philosopher[i]);
 	}
+}
+
+void	sync_philosophers(t_philosopher *philosopher, int32_t time_to_eat)
+{
+	t_state		*state;
+
+	state = (t_state *)philosopher->param;
+	philosopher->thread_started = true;
+	while (state->are_synced == false)
+		continue ;
+	if ((philosopher->id & 1) == 0x1)
+		ft_usleep(0.5 * time_to_eat);
+}
+
+void	end_philosophers(t_philosopher *philosopher)
+{
+	if (philosopher->state == EATING)
+	{
+		pthread_mutex_unlock(&philosopher->left->mutex);
+		pthread_mutex_unlock(&philosopher->right->mutex);
+	}
+	pthread_join(philosopher->thread, NULL);
+	philosopher->thread_ended = 1;
 }
