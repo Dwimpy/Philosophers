@@ -6,7 +6,7 @@
 #    By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/21 14:38:01 by arobu             #+#    #+#              #
-#    Updated: 2023/02/17 18:40:21 by arobu            ###   ########.fr        #
+#    Updated: 2023/02/19 03:36:50 by arobu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ NORM_INCLUDE	= ./include
 
 # Compiler
 CC			= cc
-CFLAGS		= -g3 #-Wall -Werror -Wextra
+CFLAGS		= -g3 -pthread  #-Wall -Werror -Wextra
 LDLFLAGS	= #-lft -L ./libft/
 
 ASAN		= #-fsanitize=address -g3
@@ -56,7 +56,7 @@ OBJS	:= 	$(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 all:	$(NAME)
 
 $(NAME): $(OBJS) $(MAIN_FILE)
-	@$(CC) $(INCLUDE) $(FRAMEWORK) $(ASAN) $(OBJS) $(MAIN_FILE) -o $@ -lm $(LDLFLAGS)
+	@$(CC) $(INCLUDE) $(FRAMEWORK) $(ASAN) $(OBJS) $(MAIN_FILE) -o $@ -lm -pthread $(LDLFLAGS)
 	@echo "$(YELLOW)Philosophers$(DEF_COLOR) $(CYAN)done.$(DEF_COLOR)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)

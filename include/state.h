@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 16:59:38 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/18 22:43:32 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/19 16:36:04 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,16 @@ typedef struct s_state
 	t_fork			*forks;
 	t_rules			rules;
 	t_init_rules	init_rules;
-	pthread_mutex_t	writing;
-	pthread_mutex_t	updating_time;
-	t_ticket_queue	*queue;
+	pthread_mutex_t	*writing;
+	bool			sync_threads;
 	long int		start_time;
-	long int		curr_time;
 }					t_state;
 
 void		initialize_state(t_state *state, int argc, char **argv);
-void		initialize_philo(t_state *state, uint32_t id);
+void		initialize_philo(t_state *state);
 void		*philosopher_loop(void *param);
 long int	time_stamp_ms(void);
-void		ft_usleep(t_state *state, int time_ms);
-void		update_time(t_state *state);
+void		ft_usleep(long int time_ms);
 void		print_death(t_state	*state, int id);
 int			ft_atoi(const char *s);
 void		print_error(char *error);
