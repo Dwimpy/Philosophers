@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:18:30 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 22:08:46 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/20 22:25:31 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void			*sync_threads(void *param);
 void	initialize_state(t_state **the_state, int argc, char **argv)
 {
 	t_state	*state;
-	int		i;
 
-	i = -1;
 	*the_state = (t_state *)malloc(sizeof(t_state));
 	if (!(*the_state))
 		state_exit_error(*the_state);
@@ -29,7 +27,11 @@ void	initialize_state(t_state **the_state, int argc, char **argv)
 	state->philosophers = NULL;
 	state->forks = NULL;
 	state->writing = NULL;
-	state_initializer_utils(state, argc, argv);
+	state->death_mutex = NULL;
+	state_initializer_utils(&state, argc, argv);
+	pthread_mutex_init(state->writing, NULL);
+	pthread_mutex_init(state->death_mutex, NULL);
+	pthread_mutex_lock(state->death_mutex);
 	init_state_values(state);
 }
 
@@ -42,6 +44,7 @@ void	initialize_rules(t_state *state, int argc)
 	else
 	{
 		print_error("Incorrect arguments");
+		print_usage();
 		exit(1);
 	}
 	return ;
@@ -71,29 +74,31 @@ static t_rules	initialize_optional(char **argv)
 	return (rules);
 }
 
-void	*sync_threads(void *param)
+void	rules_checker(t_rules rules, int argc, bool *are_valid)
 {
-	bool		in_sync;
-	int			i;
-	t_state		*state;
-
-	state = (t_state *)param;
-	in_sync = false;
-	while (in_sync == false)
+	if (rules.number_of_philosophers < 1)
 	{
-		i = -1;
-		in_sync = true;
-		while (++i < state->rules.number_of_philosophers)
-		{
-			if (state->thread_started == 0 || \
-				state->philosophers[i].thread_started == 0)
-				in_sync = false;
-		}
+		print_error("Number of philosophers must be at least 1");
+		*are_valid = false;
 	}
-	i = -1;
-	state->start_time = time_stamp_ms();
-	while (++i < state->rules.number_of_philosophers)
-		state->philosophers[i].time_of_last_meal = state->start_time;
-	state->are_synced = 1;
-	return (NULL);
+	if (rules.time_to_die < 0)
+	{
+		print_error("Time to die must be at least 0ms");
+		*are_valid = false;
+	}
+	if (rules.time_to_eat < 60)
+	{
+		print_error("Time to eat must be at least 60ms");
+		*are_valid = false;
+	}
+	if (rules.time_to_sleep < 60)
+	{
+		print_error("Time to sleep must be at least 60ms");
+		*are_valid = false;
+	}
+	if (argc == 6 && rules.times_must_eat == 0)
+	{
+		print_error("Times must eat must be at least 1");
+		*are_valid = false;
+	}
 }

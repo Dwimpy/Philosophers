@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 16:59:38 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 22:05:16 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/21 00:12:54 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,37 @@ typedef struct s_state
 	t_rules			rules;
 	t_init_rules	init_rules;
 	pthread_t		sync_thread;
+	pthread_t		check_death_thread;
+	pthread_t		check_meals_thread;
 	pthread_mutex_t	*writing;
+	pthread_mutex_t	*death_mutex;
 	bool			thread_started;
 	bool			are_synced;
-	bool			is_dead;
+	bool			dinner_over;
 	bool			is_finished;
+	bool			dt_started;
+	bool			cm_started;
 }					t_state;
 
-void		state_initializer_utils(t_state *state, int argc, char **argv);
+void		state_initializer_utils(t_state **state, int argc, char **argv);
 void		initialize_state(t_state **the_state, int argc, char **argv);
 void		init_state_values(t_state *state);
 void		initialize_philo(t_state *state);
 void		initialize_rules(t_state *state, int argc);
+void		rules_checker(t_rules rules, int argc, bool *are_valid);
 void		*sync_threads(void *param);
+void		*check_death(void *param);
+void		*check_meals(void *param);
 void		*philosopher_loop(void *param);
 long int	time_stamp_ms(void);
 void		ft_usleep(long int time_ms);
 void		print_death(t_state	*state, int id);
+void		print_meals(t_state	*state);
 int			ft_atoi(const char *s);
 void		print_error(char *error);
 void		print_usage(void);
+void		print_and_exit(t_state *state);
 void		state_exit_error(t_state *state);
+void		finish_and_free_resources(t_state *state);
 
 #endif
