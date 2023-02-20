@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_forks.c                                      :+:      :+:    :+:   */
+/*   extra_printing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 21:10:00 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/20 23:00:01 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/20 20:57:56 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/20 22:38:57 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#include "../include/state.h"
 
-void	lock_forks(t_philosopher *philosopher)
+void	print_and_exit(t_state *state)
 {
-	pthread_mutex_lock(&philosopher->left->mutex);
-	pthread_mutex_lock(&philosopher->right->mutex);
+	print_usage();
+	free(state);
+	exit (1);
 }
 
-void	unlock_forks(t_philosopher *philosopher)
+void	print_meals(t_state *state)
 {
-	pthread_mutex_unlock(&philosopher->right->mutex);
-	pthread_mutex_unlock(&philosopher->left->mutex);
+	int	i;
+
+	i = -1;
+	pthread_mutex_lock(state->writing);
+	while (++i < state->rules.number_of_philosophers)
+		printf("Philosopher %d ate %d times\n", i, \
+				state->philosophers[i].meals_eaten);
+	pthread_mutex_unlock(state->writing);
+
 }

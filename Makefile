@@ -6,14 +6,14 @@
 #    By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/21 14:38:01 by arobu             #+#    #+#              #
-#    Updated: 2023/02/19 22:08:08 by arobu            ###   ########.fr        #
+#    Updated: 2023/02/21 00:07:29 by arobu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Variables
-NAME			= philosophers
+NAME			= philo
 INCLUDE			= -I include/
-DSYM			= ./philosophers.dSYM
+DSYM			= ./philo.dSYM
 SRC_DIR			= ./src
 OBJ_DIR			= ./obj
 LIBFT_FOLDER	= ./libft
@@ -26,7 +26,7 @@ CC			= cc
 CFLAGS		= -g3 -pthread  -Wall -Werror -Wextra
 LDLFLAGS	= #-lft -L ./libft/
 
-ASAN		= #-fsanitize=address -g3
+ASAN		= #-fsanitize=thread
 #CFLAGS		= -Ofast -march=native -flto #-fsanitize=address -g3 #-g3 -Wall -Werror -Wextra -g3 #
 # FRAMEWORK	= -framework Cocoa -framework OpenGL -framework IOKit
 # LDLFLAGS	= -lft -L ./libft/ -lmlx42 -L ./MLX42/  -L ./glfw-3.3.8/lib-x86_64 -lglfw3 -lm

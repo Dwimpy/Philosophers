@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 17:23:32 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 20:06:44 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/20 19:43:59 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ void	ft_usleep(long int time_ms)
 
 	time = time_stamp_ms();
 	while (time_stamp_ms() - time < time_ms)
-		usleep(100);
+		usleep(150);
 }
