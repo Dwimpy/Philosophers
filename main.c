@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 18:29:35 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/21 00:11:46 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/21 00:22:33 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,3 +31,4 @@ int	main(int argc, char **argv)
 	finish_and_free_resources(state);
 	return (0);
 }
+ 
