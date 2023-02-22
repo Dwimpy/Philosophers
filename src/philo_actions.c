@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 23:31:50 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/22 07:40:08 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/22 15:40:44 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ static bool	try_eating(t_philo *philo);
 void	philo_think(t_philo *philo)
 {
 	philo_print_think(philo);
+	if (((t_state *)philo->param)->rules.n_philo == 1)
+	{
+		ft_sleep_ms(1.5 * ((t_state *)philo->param)->rules.time_to_die);
+		return ;
+	}
 	philo->action = HUNGRY;
 	philo->action_func = &philo_hungry;
 }

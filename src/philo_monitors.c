@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 03:40:43 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/22 07:40:09 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/22 15:34:28 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ static void	dinner_is_over(t_state *state, int flag, int id)
 void	print_results(t_state *state)
 {
 	if (state->dead_id != -1)
-		printf("%ld %d died\n", state->time_of_death, state->dead_id);
+		printf("%llu %d died\n", state->time_of_death, state->dead_id);
 	else if (state->meals_finished == 1)
-		printf("%ld All philosophers have eaten %d times\n", \
+		printf("%llu All philosophers have eaten %d times\n", \
 			state->time_of_last_meal, state->rules.times_must_eat);
 
 }

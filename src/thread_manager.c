@@ -6,7 +6,7 @@
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 04:43:46 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/22 07:21:06 by arobu            ###   ########.fr       */
+/*   Updated: 2023/02/22 15:33:32 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	start_threads(t_state *state)
 	state->syncing = 1;
 	i = -1;
 	while (++i < state->rules.n_philo)
-		pthread_join(state->philos[i].threading.thread, NULL);
+		pthread_join(state->philos[i].threading.thread, (NULL));
 }
 
 static void	start_checker_threads(t_state *state)
@@ -42,7 +42,7 @@ static void	start_checker_threads(t_state *state)
 	pthread_t		death_tracker;
 	pthread_t		meal_tracker;
 
-	pthread_create(&death_tracker, NULL, &death_monitor, &state->philos[1]);
+	pthread_create(&death_tracker, NULL, &death_monitor, &state->philos[0]);
 	pthread_create(&meal_tracker, NULL, &meal_monitor, &state->philos[0]);
 	pthread_detach(death_tracker);
 	pthread_detach(meal_tracker);
