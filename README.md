@@ -1,4 +1,4 @@
-Dining Philosophers Problem Solution
+Philosophers - 42 Project
 ====================================
 
 This project presents a solution for the dining philosophers problem using threads and locks to prevent deadlocks and starvation.
