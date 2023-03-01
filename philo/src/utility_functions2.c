@@ -1,22 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utility_functions2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/16 17:04:15 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/21 00:12:16 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/21 18:59:37 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/21 19:20:30 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/util_functions.h"
 
-static int	ft_isdigit(int c);
+int			ft_isdigit(int c);
 static int	ft_isspace3(char c);
-static int	exit_error(char *error_message);
+static void	exit_error(char *msg);
+
+char	*ft_strdup(const char *string)
+{
+	char	*destination;
+	char	*dst_start;
+	int		string_len;
+
+	string_len = ft_strlen(string);
+	destination = (char *)malloc(sizeof(char) * (string_len + 1));
+	if (!destination)
+		return (NULL);
+	dst_start = destination;
+	while (*string)
+	{
+		*destination = *string;
+		destination++;
+		string++;
+	}
+	*destination = '\0';
+	return (dst_start);
+}
 
 int	ft_atoi(const char *s)
 {
@@ -40,13 +62,13 @@ int	ft_atoi(const char *s)
 		s++;
 	}
 	if (sum > INT_MAX && sign == 1)
-		return (exit_error("Error: Overflow"));
+		exit_error("Error: Overflow");
 	if (sum > 2147483648 && sign == -1)
-		return (exit_error("Error: Underflow"));
+		exit_error("Error: Underflow");
 	return (sign * sum);
 }
 
-static int	ft_isdigit(int c)
+int	ft_isdigit(int c)
 {
 	return ((c >= 48) && (c <= 57));
 }
@@ -61,8 +83,8 @@ static int	ft_isspace3(char c)
 		|| c == '\v');
 }
 
-static int	exit_error(char *error_message)
+static void	exit_error(char *msg)
 {
-	printf("%s\n", error_message);
-	exit (1);
+	printf("%s\n", msg);
+	exit(EXIT_FAILURE);
 }

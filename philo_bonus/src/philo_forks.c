@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extra_printing.c                                   :+:      :+:    :+:   */
+/*   philo_forks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/20 20:57:56 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/20 22:38:57 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/22 01:01:04 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/22 23:18:57 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/state.h"
 
-void	print_and_exit(t_state *state)
+void	get_forks(t_philo *philo)
 {
-	print_usage();
-	free(state);
-	exit (1);
+	sem_wait(((t_state *)philo->param)->forks);
+	sem_wait(((t_state *)philo->param)->forks);
 }
 
-void	print_meals(t_state *state)
+void	release_forks(t_philo *philo)
 {
-	int	i;
-
-	i = -1;
-	pthread_mutex_lock(state->writing);
-	while (++i < state->rules.number_of_philosophers)
-		printf("Philosopher %d ate %d times\n", i, \
-				state->philosophers[i].meals_eaten);
-	pthread_mutex_unlock(state->writing);
-
+	sem_post(((t_state *)philo->param)->forks);
+	sem_post(((t_state *)philo->param)->forks);
 }

@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_parsing.c                                    :+:      :+:    :+:   */
+/*   parse_printing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 14:08:12 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/19 21:04:34 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/21 19:21:42 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/23 21:02:16 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/state.h"
 
-static void	args_checker(int argc);
-
-void	parse_args(int argc)
+void	print_usage_and_exit(void)
 {
-	args_checker(argc);
+	print_error("Wrong number of arguments");
+	printf("Usage: \
+./philo \
+[number_of_philosophers] \
+[time_to_die] \
+[time_to_eat] \
+[time_to_sleep] \
+[optional -> number_of_times_each_philosopher_must_eat]");
+	exit(EXIT_FAILURE);
 }
 
-static void	args_checker(int argc)
+void	print_error(char *error)
 {
-	if (argc != 5 && argc != 6)
-	{
-		print_error("Incorrect arguments");
-		print_usage();
-	}
+	printf("\033[0;91mError:\033[0;39m %s\n", error);
 }

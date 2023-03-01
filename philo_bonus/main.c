@@ -5,30 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 18:29:35 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/21 00:22:33 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/21 17:08:05 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/27 18:20:42 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "philosophers.h"
+#include <signal.h>
 #include "state.h"
 
 int	main(int argc, char **argv)
 {
 	t_state			*state;
+	int				status;
+	pid_t			pid;
 	int				i;
 
-	state = NULL;
 	i = -1;
-	initialize_state(&state, argc, argv);
-	initialize_philo(state);
-	state->thread_started = 1;
-	pthread_mutex_unlock(state->death_mutex);
-	finish_and_free_resources(state);
+	state = init_state(argc, argv);
+	create_processes(state);
+	while (wait(&status) > 0 && status == 0)
+		;
+	while (++i < state->rules.n_philo)
+		kill(state->philos[i].process.pid, SIGINT);
+	free_allocated_memory_exit((void **)&state, EXIT_SUCCESS);
 	return (0);
 }
- 

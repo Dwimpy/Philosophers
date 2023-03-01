@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_forks.c                                      :+:      :+:    :+:   */
+/*   parse_printing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 21:10:00 by arobu             #+#    #+#             */
-/*   Updated: 2023/02/20 23:00:01 by arobu            ###   ########.fr       */
+/*   Created: 2023/02/21 19:21:42 by arobu             #+#    #+#             */
+/*   Updated: 2023/02/21 19:38:59 by arobu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#include "../include/state.h"
 
-void	lock_forks(t_philosopher *philosopher)
+void	print_usage_and_exit(void)
 {
-	pthread_mutex_lock(&philosopher->left->mutex);
-	pthread_mutex_lock(&philosopher->right->mutex);
+	print_error("Wrong number of arguments");
+	printf("Usage: \
+./philo \
+[number_of_philosophers] \
+[time_to_die] \
+[time_to_eat] \
+[time_to_sleep] \
+[optional -> number_of_times_each_philosopher_must_eat]");
+	exit(EXIT_FAILURE);
 }
 
-void	unlock_forks(t_philosopher *philosopher)
+void	print_error(char *error)
 {
-	pthread_mutex_unlock(&philosopher->right->mutex);
-	pthread_mutex_unlock(&philosopher->left->mutex);
+	printf("\033[0;91mError:\033[0;39m %s\n", error);
 }

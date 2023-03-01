@@ -6,7 +6,7 @@
 #    By: arobu <arobu@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/21 14:38:01 by arobu             #+#    #+#              #
-#    Updated: 2023/02/21 00:07:29 by arobu            ###   ########.fr        #
+#    Updated: 2023/02/28 18:32:28 by arobu            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,15 +23,8 @@ NORM_INCLUDE	= ./include
 
 # Compiler
 CC			= cc
-CFLAGS		= -g3 -pthread  -Wall -Werror -Wextra
-LDLFLAGS	= #-lft -L ./libft/
-
+CFLAGS		= -Wall -Werror -Wextra -g3 -pthread
 ASAN		= #-fsanitize=thread
-#CFLAGS		= -Ofast -march=native -flto #-fsanitize=address -g3 #-g3 -Wall -Werror -Wextra -g3 #
-# FRAMEWORK	= -framework Cocoa -framework OpenGL -framework IOKit
-# LDLFLAGS	= -lft -L ./libft/ -lmlx42 -L ./MLX42/  -L ./glfw-3.3.8/lib-x86_64 -lglfw3 -lm
-#LDLFLAGS	= -lft -L ./libft/ -lmlx42 -L ./MLX42/ -ldl -lglfw -pthread
-
 #Archive and Remove
 RM			= rm -f
 AR			= ar rcs
@@ -47,16 +40,18 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 
 # Sources
-SRCS	:=	$(wildcard $(SRC_DIR)/*.c)
-
+SRCS	:=	memory_manager.c mutex_manager.c parse_printing.c parsing_checker.c  \
+			philo_actions.c philo_forks.c philo_monitors.c philo_printing.c  \
+			philo_thread.c philo_timing.c state_initializers.c state_rules.c  \
+			thread_manager.c utility_functions.c utility_functions2.c
 # Objects
-OBJS	:= 	$(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+OBJS	:= 	$(patsubst %.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 # Rules
 all:	$(NAME)
 
 $(NAME): $(OBJS) $(MAIN_FILE)
-	@$(CC) $(INCLUDE) $(FRAMEWORK) $(ASAN) $(OBJS) $(MAIN_FILE) -o $@ -lm -pthread $(LDLFLAGS)
+	@$(CC) $(INCLUDE) $(FRAMEWORK) $(ASAN) $(OBJS) $(MAIN_FILE) -o $@ $(LDLFLAGS)
 	@echo "$(YELLOW)Philosophers$(DEF_COLOR) $(CYAN)done.$(DEF_COLOR)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
